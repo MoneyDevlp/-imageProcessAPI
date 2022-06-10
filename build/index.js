@@ -1,17 +1,15 @@
-'use strict';
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
-Object.defineProperty(exports, '__esModule', { value: true });
-const express_1 = __importDefault(require('express'));
-const images_1 = __importDefault(require('./routes/images'));
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const images_1 = __importDefault(require("./routes/images"));
 const app = (0, express_1.default)();
 const port = 3000;
 app.use('/api/images', images_1.default);
 app.get('*', (req, res) => {
-  res.send(`
+    res.send(`
     <div>
       <img style="display:flex; margin-left:auto; margin-right:auto"
       src="https://thumbs.dreamstime.com/b/not-valid-red-stamp-text-white-48506534.jpg" />
@@ -22,6 +20,6 @@ app.get('*', (req, res) => {
 });
 // Listen port 3000
 app.listen(port, () => {
-  console.log(`server started at localhost:${port}`);
+    console.log(`server started at localhost:${port}`);
 });
 exports.default = app;

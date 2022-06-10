@@ -19,13 +19,11 @@ describe('Test endpoint', () => {
   });
 
   describe('Test endpoint /api/images not exist filename', () => {
-    it('Gets the /api/images endpoint failed, filename is not exist', async () => {
+    it('Gets the /api/images endpoint failed, filename is not exist successful', async () => {
       const response = await request.get(
         '/api/images?filename=xyzzyx&width=200&height=200'
       );
-      expect(response.text).toBe(
-        'Filename is not exist ! Please enter another filename'
-      );
+      expect(response.text).toBe('Filename is not exist ! Please enter another filename');
     });
   });
 });

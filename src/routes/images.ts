@@ -20,20 +20,11 @@ images.get('/', async (req: Request, res: Response) => {
 
   // Handle image resize
   if (!filename || !width || !height) {
-    res.send(`
-            <p style="text-align:center; font-size: 20px; font-weight: bold;font-family: cursive"
-            >Filename, width or height does not exist on url ! Please re-enter ! ex: http://localhost:3000/api/images?filename=fjord&width=300&height=300</p>
-        `);
+    res.send('Filename, width or height does not exist on url ! Please re-enter ! ex: http://localhost:3000/api/images?filename=fjord&width=300&height=300');
   } else if (Number(width) <= 0 || Number(height) <= 0) {
-    res.send(`
-            <p style="text-align:center; font-size: 20px; font-weight: bold;font-family: cursive"
-            >Invalid width or height ! Please re-enter ! ex: http://localhost:3000/api/images?filename=fjord&width=300&height=300</p>
-        `);
+    res.send('Invalid width or height ! Please re-enter ! ex: http://localhost:3000/api/images?filename=fjord&width=300&height=300');
   } else if (!checkExistImageFull(inputFile, filename as string)) {
-    res.send(`
-            <p style="text-align:center; font-size: 20px; font-weight: bold;font-family: cursive"
-            >Filename is not exist ! Please enter another filename</p>
-        `);
+    res.send('Filename is not exist ! Please enter another filename');
   } else if (
     checkExistImageResize(
       outputFile,
