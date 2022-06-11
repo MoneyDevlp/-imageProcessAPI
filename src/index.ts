@@ -1,4 +1,5 @@
 import express from 'express';
+import { Request, Response } from 'express';
 import images from './routes/images';
 
 const app = express();
@@ -6,7 +7,7 @@ const port = 3000;
 
 app.use('/api/images', images);
 
-app.get('*', (req, res) => {
+app.get('*', (req: Request, res: Response): void => {
   res.send(`
     <div>
       <img style="display:flex; margin-left:auto; margin-right:auto"
@@ -18,7 +19,7 @@ app.get('*', (req, res) => {
 });
 
 // Listen port 3000
-app.listen(port, () => {
+app.listen(port, (): void => {
   console.log(`server started at localhost:${port}`);
 });
 

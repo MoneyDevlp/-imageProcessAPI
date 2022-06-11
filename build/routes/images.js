@@ -14,37 +14,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const configFolder_1 = __importDefault(require("../configFolder"));
-const sharp_1 = __importDefault(require("sharp"));
-const path_1 = __importDefault(require("path"));
+const imageProcess_1 = __importDefault(require("../utilities/imageProcess"));
 const checkFiles_1 = require("../utilities/checkFiles");
 const images = express_1.default.Router();
 const inputFile = configFolder_1.default.ASSETS + '/imageFull/';
 const outputFile = configFolder_1.default.ASSETS + '/imageThumb/';
 images.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filename = req.query.filename;
-    const width = req.query.width;
-    const height = req.query.height;
+    const width = Number(req.query.width);
+    const height = Number(req.query.height);
+    const imageAfterResize = configFolder_1.default.ASSETS +
+        '/imageThumb/' +
+        filename +
+        `_thumb-${width}x${height}.jpg`;
     // Handle image resize
     if (!filename || !width || !height) {
         res.send('Filename, width or height does not exist on url ! Please re-enter ! ex: http://localhost:3000/api/images?filename=fjord&width=300&height=300');
     }
-    else if (Number(width) <= 0 || Number(height) <= 0) {
+    else if (width <= 0 || height <= 0) {
         res.send('Invalid width or height ! Please re-enter ! ex: http://localhost:3000/api/images?filename=fjord&width=300&height=300');
     }
     else if (!(0, checkFiles_1.checkExistImageFull)(inputFile, filename)) {
         res.send('Filename is not exist ! Please enter another filename');
     }
-    else if ((0, checkFiles_1.checkExistImageResize)(outputFile, filename, Number(width), Number(height))) {
-        res.sendFile(path_1.default.join(outputFile, filename + `_thumb-${width}x${height}.jpg`));
+    else if ((0, checkFiles_1.checkExistImageResize)(outputFile, filename, width, height)) {
+        res.status(200).sendFile(imageAfterResize);
+        console.log('Image already exists, no need to process');
     }
     else {
-        yield (0, sharp_1.default)(inputFile + filename + '.jpg')
-            .resize({
-            width: Number(width),
-            height: Number(height),
-        })
-            .toFile(outputFile + filename + `_thumb-${width}x${height}.jpg`);
-        res.sendFile(path_1.default.join(outputFile, filename + `_thumb-${width}x${height}.jpg`));
+        yield (0, imageProcess_1.default)(filename, width, height);
+        res.status(200).sendFile(imageAfterResize);
     }
 }));
 exports.default = images;

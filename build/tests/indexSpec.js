@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const index_1 = __importDefault(require("../index"));
+const images_1 = __importDefault(require("../routes/images"));
 const request = (0, supertest_1.default)(index_1.default);
 describe('Test endpoint', () => {
     describe('Test endpoint /api', () => {
@@ -32,6 +33,12 @@ describe('Test endpoint', () => {
         it('Gets the /api/images endpoint failed, filename is not exist successful', () => __awaiter(void 0, void 0, void 0, function* () {
             const response = yield request.get('/api/images?filename=xyzzyx&width=200&height=200');
             expect(response.text).toBe('Filename is not exist ! Please enter another filename');
+        }));
+    });
+    describe('Test image processing successful', () => {
+        it('Image processing successful', () => __awaiter(void 0, void 0, void 0, function* () {
+            const imageProcess = yield index_1.default.use('/api/images', images_1.default);
+            expect(imageProcess.response.statusCode).toEqual(200);
         }));
     });
 });

@@ -1,5 +1,6 @@
 import supertest from 'supertest';
 import app from '../index';
+import images from '../routes/images';
 
 const request = supertest(app);
 
@@ -23,7 +24,16 @@ describe('Test endpoint', () => {
       const response = await request.get(
         '/api/images?filename=xyzzyx&width=200&height=200'
       );
-      expect(response.text).toBe('Filename is not exist ! Please enter another filename');
+      expect(response.text).toBe(
+        'Filename is not exist ! Please enter another filename'
+      );
+    });
+  });
+
+  describe('Test image processing successful', () => {
+    it('Image processing successful', async () => {
+      const imageProcess = await app.use('/api/images', images);
+      expect(imageProcess.response.statusCode).toEqual(200);
     });
   });
 });
